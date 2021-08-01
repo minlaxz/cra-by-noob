@@ -1,7 +1,7 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
-set -euo pipefail
-echo -e "Lazyyy ones, we are gonna create \033[33mreact app\033[39m without node_modules!"
+set -e
+echo "Lazyyy ones, we are gonna create \033[33mreact app\033[39m without node_modules!"
 
 HEAD='\e[7;36m'
 RESET='\e[m'
@@ -10,38 +10,50 @@ NL='\n'
 ERROR='\e[3;31m'
 WARN='\e[3;33m'
 
-function oneLineOutput() {
+oneLineOutput() {
     line=$1
-    echo -e "${OUTPUT}$line${RESET}"
+    echo "${OUTPUT}$line${RESET}"
 }
 
-function descriptionOutput() {
+descriptionOutput() {
     line=$1
-    echo -e "${WARN}Description : $line ${RESET}"
+    echo "${WARN}Description : $line ${RESET}"
 }
 
-function warningOutput() {
+warningOutput() {
     line=$1
-    echo -e "${ERROR}Warning : $line ${RESET}"
+    echo "${ERROR}Warning : $line ${RESET}"
 }
 
-function hasSudo() {
+hasSudo() {
     dpkg-query -l sudo >/dev/null 2>&1
     return $?
 }
 
-function hasUnzip() {
+hasUnzip() {
     dpkg-query -l unzip >/dev/null 2>&1
     return $?
 }
 
-function hasCurl() {
+hasCurl() {
     dpkg-query -l curl >/dev/null 2>&1
     return $?
 }
 
 # MAKE PROJECT
 read -p "Enter your project name : " projectName
+
+if [ -z $projectName ]; then
+    warningOutput "You cannot start a project without a name!"
+    exit 1
+else
+    if [ -d $projectName ]; then
+        descriptionOutput "Checking project already exists..."
+        echo "'$projectName' already exists at $(pwd)/$projectName"
+        exit 1
+    fi
+fi
+
 read -p "Version default [0.0.0] : " projectVersion
 if [ -z "$projectVersion" ]; then
     version="0.0.0"
@@ -49,30 +61,25 @@ else
     version="$projectVersion"
 fi
 
-if [ -d $projectName ]; then
-    echo "Project '$projectName' already exists"
-    exit 1
-fi
-
-mkdir -p $projectName   
-
 # Download bootstrapped files
 hasUnzip && hasCurl
-if [[ $? -eq 0 ]]; then
+if [ $? -eq 0 ]; then
     descriptionOutput "All needed depedencies're already installed, y're good to go."
+    read -p "Press enter to continue [CTRL-C to cancle] ... " _
 else
     hasSudo
-    if [[ $? -eq 0 ]]; then
+    if [ $? -eq 0 ]; then
         warningOutput "this need 'unzip, curl'\nAnd are going to installed."
         # read -n 1 -s -r -p "Press any key to continue ..."
-        read -p "Press enter to continue [CTRL-C to cancle] ... "
+        read -p "Press enter to continue [CTRL-C to cancle] ... " _
         sudo apt-get install unzip curl
     else
         warningOutput "this need 'sudo, unzip, curl'"
     fi
 fi
 
-curl -L https://raw.githubusercontent.com/minlaxz/cra-by-noob/main/cra.tar.xz | tar xvfJ - -C $projectName/ && cd $projectName
+mkdir -p $projectName
+curl -fsSL https://raw.githubusercontent.com/minlaxz/cra-by-noob/main/cra.tar.xz | tar xvfJ - -C $projectName/ && cd $projectName
 
 cat <<EOF >>package.json
 {
