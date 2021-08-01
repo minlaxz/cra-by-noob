@@ -1,10 +1,18 @@
 ### Too many node_modules with multiple create-react-app or yarn create react-app or npx create-react-app projects
 
+TESTING ON MY MACHINE - ZSH, Ubunut 2004
+
 ok this would be my personal issue cuz each **create-react-app** project takes **166.7MB** and **39957 files**
 
 TL;DR
 
-`curl -fsSL getcra.minlaxz.me | sh`
+`curl -fsSL https://getcra.minlaxz.me | sh -s -- -i ` // to install
+
+`curl -fsSL https://getcra.minlaxz.me | sh -s -- -r ` // to remove
+
+OR just
+
+`curl -fsSL https://getcra.minlaxz.me | sh -` // to install
 
 This will download just bootstrapped files and dirs of original **create-react-app**
 
