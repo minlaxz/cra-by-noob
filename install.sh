@@ -13,4 +13,3 @@ cat<<EOF >>$LAXZHOME/.laxzrc
 alias cra="$HOME/.laxz/cra.sh"
 EOF
 echo "source $HOME/.laxz/.laxzrc" >> $HOME/.zshrc
-source $HOME/.zshrc
