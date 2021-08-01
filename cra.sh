@@ -1,9 +1,8 @@
-#!/bin/sh
+#!/usr/bin/env sh
 set -e
 set -o noglob
 
 # curl ... | Name="Project Name" sh -
-
 HEAD='\e[7;36m'
 RESET='\e[m'
 OUTPUT='\e[32m'
@@ -41,34 +40,27 @@ hasCurl() {
     return $?
 }
 
-oneLineOutput "Lazyyy ones, we are gonna create \033[33mreact app\033[39m without node_modules!"
-
 # MAKE PROJECT
 make_project() {
-    case "$1" in
-    -* | "")
-        if [ -z "${NAME}" ]; then
-            projectName="Default"
-        else
-            projectName=$NAME
-        fi
-        ;;
-    *)
-        shift
-        ;;
-    esac
-    echo "$projectName"
+    # Already define a project name
+    projectName=$1
+
     if [ -z $projectName ]; then
-        warningOutput "You cannot start a project without a name!"
-        exit 1
-    else
-        if [ -d $projectName ]; then
-            descriptionOutput "Checking project already exists..."
-            echo "'$projectName' already exists at $(pwd)/$projectName"
+        read -p "Enter your project name : " projectName
+        if [ -z $projectName ]; then
+            warningOutput "You cannot start a project without a name!"
             exit 1
+        else
+            descriptionOutput "Checking project already exists..."
+            if [ -d $projectName ]; then
+                warningOutput "'$projectName' already exists at $(pwd)/$projectName"
+                exit 1
+            else
+                oneLineOutput "DIR CHECK PASS"
+            fi
         fi
     fi
-
+    oneLineOutput "Lazyyy ones, we are gonna create \033[33mreact app\033[39m without node_modules!\nHere > $(pwd)/$projectName"
     read -p "Version default [0.0.0] : " projectVersion
     if [ -z "$projectVersion" ]; then
         version="0.0.0"
@@ -103,7 +95,10 @@ create_project() {
 
 # Download bootstrapped files
 download_bootstrapped_files() {
-    curl -fsSL https://raw.githubusercontent.com/minlaxz/cra-by-noob/main/cra.tar.xz | tar xvfJ - -C $projectName/ && cd $projectName
+    descriptionOutput "Downloading bootstrapped tarball."
+    curl -fsSL https://raw.githubusercontent.com/minlaxz/cra-by-noob/main/cra.tar.xz | tar xfJ - -C $projectName/ && cd $projectName
+    oneLineOutput "DONE - tarball is extracted."
+    descriptionOutput "Creating package.json ..."
     cat <<EOF >>package.json
 {
   "name": "$projectName",
@@ -144,9 +139,11 @@ download_bootstrapped_files() {
   }
 }
 EOF
+    oneLineOutput "DONE - created package.json"
 }
 
 # --- running process --
+
 {
     make_project "$@"
     check_libs
