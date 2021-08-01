@@ -4,7 +4,7 @@ ok this would be my personal issue cuz each **create-react-app** project takes *
 
 TL;DR
 
-`curl -fsSL cra.minlaxz.me | sh`
+`curl -fsSL getcra.minlaxz.me | sh`
 
 This will download just bootstrapped files and dirs of original **create-react-app**
 
