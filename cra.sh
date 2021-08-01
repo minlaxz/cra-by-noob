@@ -51,7 +51,7 @@ if [ -d $projectName ]; then
     exit 1
 fi
 
-# mkdir -p $projectName && cd $_
+mkdir -p $projectName   
 
 # Download bootstrapped files
 hasUnzip && hasCurl
@@ -69,7 +69,7 @@ else
     fi
 fi
 
-curl -L https://raw.github.com/minlaxz/cra-by-noob/cra.tar.xz | tar tvfz - -C $projectName/ && cd $projectName
+curl -L https://raw.githubusercontent.com/minlaxz/cra-by-noob/main/cra.tar.xz | tar xvfJ - -C $projectName/ && cd $projectName
 
 cat <<EOF >>package.json
 {
