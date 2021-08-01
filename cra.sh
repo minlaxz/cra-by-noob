@@ -42,47 +42,55 @@ hasCurl() {
 }
 
 # MAKE PROJECT
-read -p "Enter your project name : " projectName
-
-if [ -z $projectName ]; then
-    warningOutput "You cannot start a project without a name!"
-    exit 1
-else
-    if [ -d $projectName ]; then
-        descriptionOutput "Checking project already exists..."
-        echo "'$projectName' already exists at $(pwd)/$projectName"
+make_project() {
+    read -p "Enter your project name : " projectName
+    if [ -z $projectName ]; then
+        warningOutput "You cannot start a project without a name!"
         exit 1
+    else
+        if [ -d $projectName ]; then
+            descriptionOutput "Checking project already exists..."
+            echo "'$projectName' already exists at $(pwd)/$projectName"
+            exit 1
+        fi
     fi
-fi
 
-read -p "Version default [0.0.0] : " projectVersion
-if [ -z "$projectVersion" ]; then
-    version="0.0.0"
-else
-    version="$projectVersion"
-fi
+    read -p "Version default [0.0.0] : " projectVersion
+    if [ -z "$projectVersion" ]; then
+        version="0.0.0"
+    else
+        version="$projectVersion"
+    fi
+}
+
+check_libs() {
+    hasUnzip && hasCurl
+    if [ $? -eq 0 ]; then
+        descriptionOutput "All needed depedencies're already installed, y're good to go."
+        read -p "Press enter to continue [CTRL-C to cancle] ... " _
+        oneLineOutput "Please weed :c ... "
+    else
+        hasSudo
+        if [ $? -eq 0 ]; then
+            warningOutput "this need 'unzip, curl'\nAnd are going to installed."
+            # read -n 1 -s -r -p "Press any key to continue ..."
+            read -p "Press enter to continue [CTRL-C to cancle] ... " _
+            sudo apt-get install unzip curl
+        else
+            warningOutput "this need 'sudo, unzip, curl'"
+            exit 1
+        fi
+    fi
+}
+
+create_project() {
+    mkdir -p $projectName
+}
 
 # Download bootstrapped files
-hasUnzip && hasCurl
-if [ $? -eq 0 ]; then
-    descriptionOutput "All needed depedencies're already installed, y're good to go."
-    read -p "Press enter to continue [CTRL-C to cancle] ... " _
-else
-    hasSudo
-    if [ $? -eq 0 ]; then
-        warningOutput "this need 'unzip, curl'\nAnd are going to installed."
-        # read -n 1 -s -r -p "Press any key to continue ..."
-        read -p "Press enter to continue [CTRL-C to cancle] ... " _
-        sudo apt-get install unzip curl
-    else
-        warningOutput "this need 'sudo, unzip, curl'"
-    fi
-fi
-
-mkdir -p $projectName
-curl -fsSL https://raw.githubusercontent.com/minlaxz/cra-by-noob/main/cra.tar.xz | tar xvfJ - -C $projectName/ && cd $projectName
-
-cat <<EOF >>package.json
+download_bootstrapped_files() {
+    curl -fsSL https://raw.githubusercontent.com/minlaxz/cra-by-noob/main/cra.tar.xz | tar xvfJ - -C $projectName/ && cd $projectName
+    cat <<EOF >>package.json
 {
   "name": "$projectName",
   "version": "$version",
@@ -122,3 +130,12 @@ cat <<EOF >>package.json
   }
 }
 EOF
+}
+
+# --- run the process --
+{
+    make_project
+    check_libs
+    create_project
+    download_bootstrapped_files
+}
