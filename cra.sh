@@ -2,6 +2,8 @@
 set -e
 set -o noglob
 
+# curl ... | Name="Project Name" sh -
+
 HEAD='\e[7;36m'
 RESET='\e[m'
 OUTPUT='\e[32m'
@@ -43,7 +45,18 @@ oneLineOutput "Lazyyy ones, we are gonna create \033[33mreact app\033[39m withou
 
 # MAKE PROJECT
 make_project() {
-    projectName=$1
+    case "$1" in
+    -* | "")
+        if [ -z "${NAME}" ]; then
+            projectName="Default"
+        else
+            projectName=$NAME
+        fi
+        ;;
+    *)
+        shift
+        ;;
+    esac
     echo "$projectName"
     if [ -z $projectName ]; then
         warningOutput "You cannot start a project without a name!"
@@ -137,7 +150,6 @@ EOF
 {
     make_project "$@"
     check_libs
-    create_project 
+    create_project
     download_bootstrapped_files
 }
-
