@@ -29,6 +29,9 @@ warningOutput() {
 setup_laxzhome() {
     LAXZHOME=$HOME/.laxz
     mkdir -p $LAXZHOME
+    if [ ! -f $LAXZHOME/.laxzrc ]; then
+        touch $LAXZHOME/.laxzrc
+    fi
 }
 
 remove_cra() {
