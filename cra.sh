@@ -1,4 +1,7 @@
-#! /bin/env bash
+#!/usr/bin/env bash
+
+set -euo pipefail
+echo -e "Lazyyy ones, we are gonna create \033[33mreact app\033[39m without node_modules!"
 
 HEAD='\e[7;36m'
 RESET='\e[m'
@@ -39,7 +42,7 @@ function hasCurl() {
 
 # MAKE PROJECT
 read -p "Enter your project name : " projectName
-read -p "Version [0.0.0] : " projectVersion
+read -p "Version default [0.0.0] : " projectVersion
 if [ -z "$projectVersion" ]; then
     version="0.0.0"
 else
