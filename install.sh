@@ -33,7 +33,7 @@ setup_laxzhome() {
 
 remove_cra() {
     if [ -f $LAXZHOME/cra.sh ]; then
-        warningOutput "CHECK - found cra."
+        warningOutput "CHECK - found cra, removing..."
         rm $LAXZHOME/cra.sh
     fi
     descriptionOutput "DONE - removed cra."
@@ -64,7 +64,8 @@ main() {
         finish_up
         ;;
     "-r")
-        oneLineOutput "Removeing CRA."
+        oneLineOutput "Removing CRA."
+        setup_laxzhome
         remove_cra
         ;;
     esac
