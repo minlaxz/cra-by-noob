@@ -2,8 +2,6 @@
 set -e
 set -o noglob
 
-echo "Lazyyy ones, we are gonna create \033[33mreact app\033[39m without node_modules!"
-
 HEAD='\e[7;36m'
 RESET='\e[m'
 OUTPUT='\e[32m'
@@ -40,6 +38,8 @@ hasCurl() {
     dpkg-query -l curl >/dev/null 2>&1
     return $?
 }
+
+oneLineOutput "HELLO FROM SHELL ..."
 
 # MAKE PROJECT
 make_project() {
