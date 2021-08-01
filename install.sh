@@ -46,13 +46,26 @@ download_cra() {
 }
 
 finish_up() {
-    sed -i '/alias cra/d' $LAXZHOME/.laxzrc
-    cat <<EOF >>$LAXZHOME/.laxzrc
-alias cra="$HOME/.laxz/cra.sh"
-EOF
+    oneLineOutput "REMOVING laxzrc from zshrc"
     sed -i '/source $HOME/.laxz/.laxzrc/d' $HOME/.zshrc
+    oneLineOutput "Adding laxzrc to zshrc"
     echo "source $HOME/.laxz/.laxzrc" >>$HOME/.zshrc
     oneLineOutput "Good to go!\nJust run 'cra'"
+}
+
+# this should be called only after setup_laxzhome
+update_rc() {
+    if [ -f $LAXZHOME/cra.sh ]; then
+        # cra exists
+        sed -i '/alias cra/d' $LAXZHOME/.laxzrc # clean alias about cra in laxzrc
+        cat <<EOF >>$LAXZHOME/.laxzrc
+alias cra="$HOME/.laxz/cra.sh"
+EOF
+        oneLineOutput "cra is added to laxzrc"
+    else
+        sed -i '/alias cra/d' $LAXZHOME/.laxzrc # clean alias about cra in laxzrc
+        oneLineOutput "cra is removed from laxzrc"
+    fi
 }
 
 main() {
@@ -63,14 +76,14 @@ main() {
         setup_laxzhome
         remove_cra
         download_cra
+        update_rc
         finish_up
         ;;
     "-r")
         oneLineOutput "Removing CRA."
         setup_laxzhome
         remove_cra
-        sed -i '/alias cra/d' $LAXZHOME/.laxzrc
-        sed -i '/source $HOME/.laxz/.laxzrc/d' $HOME/.zshrc
+        update_rc
         ;;
     esac
 
