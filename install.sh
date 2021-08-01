@@ -50,7 +50,7 @@ download_cra() {
 
 finish_up() {
     oneLineOutput "REMOVING laxzrc from zshrc"
-    sed -i '/source $HOME/.laxz/.laxzrc/d' $HOME/.zshrc
+    sed -i '/source $HOME\/\.laxz\/\.laxzrc/d' $HOME/.zshrc
     oneLineOutput "Adding laxzrc to zshrc"
     echo "source $HOME/.laxz/.laxzrc" >>$HOME/.zshrc
     oneLineOutput "Good to go!\nJust run 'cra'"
