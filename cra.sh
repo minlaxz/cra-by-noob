@@ -132,10 +132,12 @@ download_bootstrapped_files() {
 EOF
 }
 
-# --- run the process --
-{
+# --- running process --
+main() {
     make_project
     check_libs
     create_project
     download_bootstrapped_files
 }
+
+main
