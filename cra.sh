@@ -39,11 +39,12 @@ hasCurl() {
     return $?
 }
 
-oneLineOutput "HELLO FROM SHELL ..."
+oneLineOutput "Lazyyy ones, we are gonna create \033[33mreact app\033[39m without node_modules!"
 
 # MAKE PROJECT
 make_project() {
-    read -p "Enter your project name : " projectName
+    projectName=$1
+    echo "$projectName"
     if [ -z $projectName ]; then
         warningOutput "You cannot start a project without a name!"
         exit 1
@@ -133,11 +134,10 @@ EOF
 }
 
 # --- running process --
-main() {
-    make_project
+{
+    make_project "$@"
     check_libs
-    create_project
+    create_project 
     download_bootstrapped_files
 }
 
-main
