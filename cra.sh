@@ -95,8 +95,11 @@ create_project() {
 
 # Download bootstrapped files
 download_bootstrapped_files() {
-    descriptionOutput "Downloading bootstrapped tarball."
-    curl -fsSL https://raw.githubusercontent.com/minlaxz/cra-by-noob/main/cra.tar.xz | tar xfJ - -C $projectName/ && cd $projectName
+    descriptionOutput "Getting latest tarball list..."
+    tarballVersion=$(curl -s https://api.github.com/repos/minlaxz/cra-by-noob/releases/latest | grep "browser_download_url.*tar.xz"  | cut -d : -f 2,3 | tr -d \" | xargs)
+    descriptionOutput "Downloading bootstrapped tarball..."
+    curl -fsSL $tarballVersion | tar xfJ - -C $projectName/ && cd $projectName
+    # curl -fsSL https://raw.githubusercontent.com/minlaxz/cra-by-noob/main/cra.tar.xz | tar xfJ - -C $projectName/ && cd $projectName
     oneLineOutput "DONE - tarball is extracted."
     descriptionOutput "Creating package.json ..."
     cat <<EOF >>package.json
