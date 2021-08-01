@@ -1,6 +1,7 @@
-#!/usr/bin/env sh
-
+#!/bin/sh
 set -e
+set -o noglob
+
 echo "Lazyyy ones, we are gonna create \033[33mreact app\033[39m without node_modules!"
 
 HEAD='\e[7;36m'
