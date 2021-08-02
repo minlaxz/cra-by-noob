@@ -6,15 +6,19 @@ ok this would be my personal issue cuz each **create-react-app** project takes *
 
 TL;DR
 
-`curl -fsSL https://getcra.minlaxz.me | sh -s -- -i ` // to install
+`curl -fsSL https://getcra.minlaxz.me | bash -s -- -i ` // to install cra-noob
 
-`curl -fsSL https://getcra.minlaxz.me | sh -s -- -r ` // to remove
+`curl -fsSL https://getcra.minlaxz.me | bash -s -- -r ` // to remove cra-noob
 
 OR just
 
-`curl -fsSL https://getcra.minlaxz.me | sh -` // to install
+`curl -fsSL https://getcra.minlaxz.me | bash -` // to install
 
-This will download just bootstrapped files and dirs of original **create-react-app**
+and run `cra` or `cra -n <your_project_name>` and coffee break ☕
+
+[cra.sh](cra.sh) will download just bootstrapped files and dirs of original **create-react-app** files
+
+also will create _package.json_ with updated version of react-scripts used in `create-react-app` and projectName etc.
 
 - **project_name/src/\***
 - **project_name/build/\***
@@ -22,8 +26,31 @@ This will download just bootstrapped files and dirs of original **create-react-a
 
 ---
 
+### With docker-compose and kool
+
+[kool](https://kool.dev) is a cli tool based on docker and docker-compose
+
+so you will need
+
+- docker
+- docker-compose
+- kool
+
+just run `kool start` in porject folder
+
+---
+
+### With yarn workspaces
+
+TODO for readme
+
+---
+
+### Why?
+
 ### from create-react-app
-I want to cut these 
+
+I want to cut these
 
 - git first commit with bootstrapped files
 - auto installation of node_modules
@@ -45,7 +72,8 @@ But you could use yarn workspaces to shrink multile duplicated node_modules by s
 I used yarn workspaces and I wanted in each repo with their specific _yarn.lock_.
 
 ---
-### How the hell this popular execution works ? with _subdomain.domain.tld_
+
+### How the hell this popular execution works ? with _subdomain.domain.tld_ | shell -- args
 
 actual comand should be ...
 
