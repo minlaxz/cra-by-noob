@@ -42,7 +42,7 @@ just run `kool start` in porject folder
 
 ### With yarn workspaces
 
-TODO for readme
+TODO for README
 
 ---
 
