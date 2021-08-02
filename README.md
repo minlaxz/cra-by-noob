@@ -94,3 +94,17 @@ more about [curl -fsSL](https://explainshell.com/explain?cmd=curl+-fsSL)
 If you're from **Myanmar** just like me, you will need `VPN` as _Myanmar Junta Min Aung Hlaing_ (son of bitch) is blocking the Cloudflare.
 
 [IF YOU WANT TO KNOW SON OF BITCH IN MYANMR - Google Search](https://www.google.com/search?q=myanmar+junta&source=lmns&bih=981&biw=1874&hl=en&sa=X&ved=2ahUKEwig1cPZgJDyAhVKXCsKHda6CvkQ_AUoAHoECAEQAA)
+
+
+---
+---
+
+Notes for me
+
+- git co --orphan docs
+- git rm -r --cached .
+- nano index.md
+- git ci -am "Message"
+- git push origin docs
+- git co main # for code
+- git co docs # for github pages
