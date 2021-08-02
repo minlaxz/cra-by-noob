@@ -1,0 +1,8 @@
+scripts:
+  node: kool exec app node
+  setup: kool start
+  yarn: kool exec app yarn
+  cat: kool exec app cat
+  ls: kool exec app ls
+
+# you may run `kool run yarn install` is equal to `yarn install`

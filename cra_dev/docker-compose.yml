@@ -1,0 +1,17 @@
+version: "3.7"
+
+services:
+  app:
+    # Image is not ready yet, but it will be soon
+    image: minlaxz/cra:base
+    # let 'kool' handle the container name
+    # container_name: app_container_name
+    entrypoint: ["yarn", "start"]
+    network_mode: "host"
+    environment:
+      - CHOKIDAR_USEPOLLING=true # use polling for file change detection HRM?
+    working_dir: /my-app
+    volumes:
+      - ./:/my-app:cached # host first, then container
+      - ./node_modules/:/my-app/node_modules:delegated # container first, then host
+
