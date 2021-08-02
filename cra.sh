@@ -60,11 +60,11 @@ make_project() {
         fi
     fi
     oneLineOutput "Lazyyy ones, we are gonna create \033[33mreact app\033[39m without node_modules!\nHere > $(pwd)/$projectName"
-    read -p "Version default [0.0.0] : " projectVersion
-    if [[ -z "$projectVersion" ]]; then
-        version="0.0.0"
+    read -p "Version default [0.0.0] : " version
+    if [[ -z "$version" ]]; then
+        projectVersion="0.0.0"
     else
-        version="$projectVersion"
+        projectVersion="$version"
     fi
 }
 
@@ -90,48 +90,23 @@ check_libs() {
 
 create_project() {
     mkdir -p $projectName
-    descriptionOutput "Creating package.json ..."
-    cat <<EOF >>package.json
-{
-  "name": "$projectName",
-  "version": "$version",
-  "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-scripts": "4.0.3",
-    "web-vitals": "^1.0.1"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
-}
-EOF
-    oneLineOutput "DONE - created package.json"
+    descriptionOutput "Getting react-scripts version ..."
+    REACT_SCRIPTS_VERSION=$(curl -fsSL https://raw.githubusercontent.com/facebook/create-react-app/main/packages/react-scripts/package.json \
+    | grep '"version"' | cut -d : -f 2,3 | tr -d \" | cut -c -6 | xargs)
+    oneLineOutput "DONE - react-scripts version : $REACT_SCRIPTS_VERSION"
+    
+    # Replace projectName projectVersion REACT_SCRIPTS_VERSION
+    descriptionOutput "Getting package.json from cra-noob repo ..."
+    curl -fsSL https://raw.githubusercontent.com/minlaxz/cra-by-noob/main/package.json | jq '.name = $name' --arg name $projectName \
+    | jq '.version = $version' --arg version $projectVersion \
+    | jq '.dependencies ."react-scripts" = $rversion' --arg rversion $REACT_SCRIPTS_VERSION > $projectName/package.json
+    oneLineOutput "DONE - Created $projectName/package.json"
+
+    # sed -i "s/\$projectName/$projectName/g" $projectName/package.json
+    # sed -i "s/\$projectVersion/$projectVersion/g" $projectName/package.json
+    # sed -i "s/4.0.3/$REACT_SCRIPTS_VERSION/g" $projectName/package.json     # I know 🤣
+
+
 }
 
 # Download bootstrapped files
@@ -226,6 +201,7 @@ EOF
         check_libs
         create_project
         download_bootstrapped_files
+        oneLineOutput "HAH! cd $projectName && yarn install && yarn start"
         ;;
     "-u" | "--update")
         check_update
