@@ -4,6 +4,4 @@ cc
 dd
 ee
 ff
-docker
-cra_dev
-cra.tar.xz
+*.tar.xz
