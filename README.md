@@ -6,13 +6,13 @@ ok this would be my personal issue cuz each **create-react-app** project takes *
 
 TL;DR
 
-`curl -fsSL https://getcra.minlaxz.me | bash -s -- -i ` // to install cra-noob
+`curl -fsSL https://getcra.minlaxz.me | sh -s -- -i ` // to install cra-noob
 
-`curl -fsSL https://getcra.minlaxz.me | bash -s -- -r ` // to remove cra-noob
+`curl -fsSL https://getcra.minlaxz.me | sh -s -- -r ` // to remove cra-noob
 
 OR just
 
-`curl -fsSL https://getcra.minlaxz.me | bash -` // to install
+`curl -fsSL https://getcra.minlaxz.me | sh -` // to install
 
 and run `cra` or `cra -n <your_project_name>` and coffee break ☕
 
