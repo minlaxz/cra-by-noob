@@ -66,9 +66,11 @@ make_project() {
     else
         projectVersion="$version"
     fi
-    read -p "Add kool and docker suppord [y/N] : " ds
-    if [[ -z "$ds" ]]; then
+    read -p "Add kool and docker support [y/N] : " ds
+    if [[ -z "$ds" || "$ds" == "N" || "$ds" == "n" ]]; then
         dockerSupport="n"
+    else
+        descriptionOutput "I think kool and docker support should be added."
     fi
 }
 
