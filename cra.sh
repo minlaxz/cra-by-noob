@@ -60,11 +60,15 @@ make_project() {
         fi
     fi
     oneLineOutput "Lazyyy ones, we are gonna create \033[33mreact app\033[39m without node_modules!\nHere > $(pwd)/$projectName"
-    read -p "Version default [0.0.0] : " version
+    read -p "Version [0.0.0] : " version
     if [[ -z "$version" ]]; then
         projectVersion="0.0.0"
     else
         projectVersion="$version"
+    fi
+    read -p "Add kool and docker suppord [y/N] : " ds
+    if [[ -z "$ds" ]]; then
+        dockerSupport="n"
     fi
 }
 
@@ -91,21 +95,28 @@ check_libs() {
 create_project() {
     mkdir -p $projectName
     descriptionOutput "Getting react-scripts version ..."
-    REACT_SCRIPTS_VERSION=$(curl -fsSL https://raw.githubusercontent.com/facebook/create-react-app/main/packages/react-scripts/package.json \
-    | grep '"version"' | cut -d : -f 2,3 | tr -d \" | cut -c -6 | xargs)
+    REACT_SCRIPTS_VERSION=$(curl -fsSL https://raw.githubusercontent.com/facebook/create-react-app/main/packages/react-scripts/package.json |
+        grep '"version"' | cut -d : -f 2,3 | tr -d \" | cut -c -6 | xargs)
     oneLineOutput "DONE - react-scripts version : $REACT_SCRIPTS_VERSION"
-    
+
     # Replace projectName projectVersion REACT_SCRIPTS_VERSION
     descriptionOutput "Getting package.json from cra-noob repo ..."
-    curl -fsSL https://raw.githubusercontent.com/minlaxz/cra-by-noob/main/package.json | jq '.name = $name' --arg name $projectName \
-    | jq '.version = $version' --arg version $projectVersion \
-    | jq '.dependencies ."react-scripts" = $rversion' --arg rversion $REACT_SCRIPTS_VERSION > $projectName/package.json
+    curl -fsSL https://raw.githubusercontent.com/minlaxz/cra-by-noob/main/package.json | jq '.name = $name' --arg name $projectName |
+        jq '.version = $version' --arg version $projectVersion |
+        jq '.dependencies ."react-scripts" = $rversion' --arg rversion $REACT_SCRIPTS_VERSION >$projectName/package.json
     oneLineOutput "DONE - Created $projectName/package.json"
+
+    # Add docker-compose and kool file
+    if [[ $dockerSupport -eq "n" ]]; then
+        descriptionOutput "Getting compose files from cra-noob repo ..."
+        curl -fsSL https://raw.githubusercontent.com/minlaxz/cra-by-noob/main/docker-compose.yml >$projectName/docker-compose.yml
+        curl -fsSL https://raw.githubusercontent.com/minlaxz/cra-by-noob/main/kool.yaml >$projectName/kool.yaml
+        oneLineOutput "DONE - Created $projectName/docker-compose.yml"
+    fi
 
     # sed -i "s/\$projectName/$projectName/g" $projectName/package.json
     # sed -i "s/\$projectVersion/$projectVersion/g" $projectName/package.json
     # sed -i "s/4.0.3/$REACT_SCRIPTS_VERSION/g" $projectName/package.json     # I know 🤣
-
 
 }
 
