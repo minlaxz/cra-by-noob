@@ -107,7 +107,7 @@ create_project() {
     oneLineOutput "DONE - Created $projectName/package.json"
 
     # Add docker-compose and kool file
-    if [[ $dockerSupport -eq "n" ]]; then
+    if [[ $dockerSupport == "n" ]]; then
         descriptionOutput "Getting compose files from cra-noob repo ..."
         curl -fsSL https://raw.githubusercontent.com/minlaxz/cra-by-noob/main/docker-compose.yml >$projectName/docker-compose.yml
         curl -fsSL https://raw.githubusercontent.com/minlaxz/cra-by-noob/main/kool.yaml >$projectName/kool.yaml
